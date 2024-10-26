@@ -28,12 +28,14 @@ my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT
 ingredients_list = st.multiselect ('Choose up to 5 ingredients:', my_dataframe,
                                   max_selections = 5)
 if ingredients_list:
+    ingredients_list=''
     #st.write (ingredients_list)
     #st.text(ingredients_list)
     ingredients_string = ''
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' ' 
-
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+        fv.df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
     st.write(ingredients_string)
 
 my_insert_stmt = """ insert into smoothies.public.orders(ingredients , name_on_order)
@@ -51,3 +53,4 @@ if time_to_insert:
 import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
 st.text(fruityvice_response)
+fv.df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
