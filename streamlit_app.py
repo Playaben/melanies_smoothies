@@ -1,6 +1,5 @@
 # Import python packages
 import streamlit as st
-#from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
 
 # Write directly to the app
@@ -13,13 +12,6 @@ name_on_order = st.text_input ('Name on Smoothie')
 st.write ('The name on your Somoothie will be:', name_on_order)
 
 
-#option = st.selectbox(
-#    "What is your favorite fruit?",
-#    ('Banana', 'Strawberries', 'Peaches'),
-#)
-
-#st.write("Your favorite fruit is:", option)
-
 cnx = st.connection("snowflake")
 session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
@@ -28,9 +20,7 @@ my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT
 ingredients_list = st.multiselect ('Choose up to 5 ingredients:', my_dataframe,
                                   max_selections = 5)
 if ingredients_list:
-    ingredients_list=''
-    #st.write (ingredients_list)
-    #st.text(ingredients_list)
+
     ingredients_string = ''
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' ' 
